@@ -1,38 +1,29 @@
-
 '''Nome e R.A. da pessoa 1'''
 #Gustavo Luiz Silva Lima RA:1801471
 '''Nome e R.A. da pessoa 2 (se feito em dupla)'''
 #Luíz Felipe RA:
 
 '''
-
     BUSCAS
-
 Já discutimos um pouco no início do semestre sobre o problema de buscar um
 dado elemento (digamos, nosso "alvo") dentro de uma lista.
-
 Se o elemento ocorre na lista, queremos um índice em que ele ocorre.
 (Por que não "o" índice? Alguém sabe?)
 Mas, se o elemento não está na lista, queremos obter algo como False.
-
 EXEMPLO:
     lista = [ 29, 14, 63, 47, 91, 12, 36, 101, 46, 52, 68, 127, 31, 77 ]
     alvo = 47, está na lista? Sim, na posição 3
     alvo = 100, está na lista? Não (False).
-
 '''
 
 '''
 EXERCÍCIO 1
-
 Retomando o exemplo, vamos usar a mesma lista e a ideia de perguntar
 sobre diferentes alvos. Para cada uma das variáveis a seguir, apague
 o None e preencha seu valor adequadamente segundo o exemplo:
-
     posicao_47 = 3
     posicao_14 = 1
     posicao_100 = None
-
 '''
 
 # trocar None pelos índices adequados, se existirem
@@ -45,12 +36,9 @@ posicao_127 = 11
 Lembre-se que, para acessar uma determinada posição da lista, usamos a
 seguinte sintaxe:
         NOME_DA_LISTA[índice]
-
 Onde o índice (posição) começa em 0 (zero) para a primeira posição e assim
 por diante.
-
 Exemplos:
-
     > lista = [100, 102, 104, 106, 108, 110, 112, 114, 116, 118]
     > lista[0]
     100
@@ -62,40 +50,30 @@ Exemplos:
 
 '''
 EXERCÍCIO 2
-
 Escreva uma função na_posicao que recebe uma lista e um índice, e retorna o
 valor que está armazenado nessa posição da lista.
-
 Por exemplo: a chamada na_posicao([20, 41, 33], 2) deve retornar 33.
-
 '''
 
 def na_posicao(lista, indice):
-    
     return lista[indice]
-
 
 '''
 Veja o código a seguir.
 Trata-se de uma função que recebe uma lista e percorre-a toda. Para cada
 índice válido da lista. Isto é, desde o índice 0 até o len(lista) - 1.
-
 Para cada índice, a função imprime na tela qual o conteúdo da lista naquele
 determinado índice, com uma mensagem do tipo
 "na posicao i, temos o numero j"
-
 def imprime_conteudo(lista):
     for i in range(len(lista)):
         print ('na posicao', i, 'temos o numero', lista[i])
-
 '''
 
 '''
 EXERCÍCIO 3
-
 Escreva uma função que recebe uma lista e um elemento alvo, e percorrendo
 a lista índice por índice, busca o alvo na lista.
-
 A função deve retornar True, se o elemento foi encontrado, e False caso
 contrário.
 '''
@@ -104,7 +82,6 @@ def busca_linear(lista, alvo):
     i=0
     
     for i in range(0, len(lista)):
-        
         fotografa(i,lista[i])
         if alvo == lista[i]:
             return True
@@ -117,68 +94,53 @@ def busca_linear(lista, alvo):
 
 '''
 EXERCÍCIO 4
-
 Faça um upgrade na função busca_linear.
 (Você irá alterar o código da função já feita, não escrever uma nova.)
-
 Nesse upgrade, a cada vez que você consultar um índice da lista,
 tire uma "fotografia" do índice visitado (isto é, a posição) e de qual é
 o elemento encontrado naquela posição.
-
 Lembre-se que "fotografar" significa fazer uma chamada à função "fotografia",
 implementada mais abaixo no próprio corpo desse código.
-
 A chamada receberá dois parâmetros: o índice e o elemento presente no
 índice. Algo assim:
     fotografa(i, <ELEMENTO NA POSIÇÃO i DA LISTA>)
-
 '''
-
-
 
 '''
 Para a próxima parte, vamos lembrar como obter a média aritmética entre dois
 números.
-
     Se temos os valores:
         x = 10
         y = 6
     a média entre esses dois será 8.
-
     Se temos
         x = 12
         y = 18
     a média aritmética entre eles será 15.
-
 Qual o cálculo que encontra esse valor?
 Nós somamos os valores e dividimos por 2.
 '''
 
 '''
 EXERCÍCIO 5(A)
-
 As três variáveis abaixo deverão conter o valor de uma média aritmética
 entre dois valores. Estes valores são indicados pelos seus nomes e
 nos comentários.
-
 Preencha corretamente as três variáveis.
 '''
 
-media_4_6 = None    # preencher com a média exata entre 4 e 6
-media_1220_8 = None # preencher com a média exata entre 1220 e 8
-media_7_20 = None   # preencher com a média exata entre 7 e 20
+media_4_6=5.0
+media_1220_8=614.0
+media_7_20=13.5
 
 '''
 Após somar os números, a divisão exata por 2 nos dá a média aritmética
 entre os dois.
-
 Em alguns casos, porém, queremos obter a média arredondada para baixo.
 Por exemplo, a média entre 3 e 8 é 5.5, mas arredondando para baixo obtemos
 o número 5.
-
 Em Python, a divisão arredondada para baixo é obtida com a operação '//',
 que difere da divisão comum '/'.
-
 Exemplos que você pode testar no IDLE:
     > (12+20)//2
     16
@@ -186,47 +148,43 @@ Exemplos que você pode testar no IDLE:
     15.5
     > (12+19)//2
     15
-
 '''
 
 '''
 EXERCÍCIO 5(B)
-
 Escreva uma função que recebe dois números e calcula a média entre eles,
 arredondada para baixo. Isto é, queremos sempre resultado inteiro.
 '''
 
 def media(a, b):
-    pass # colocar seu código no lugar desse pass
+    media= a + b
+    media= media / 2
+    return int(media)
 
 '''
 EXERCÍCIO 6
-
 Escreva uma função que recebe uma lista e dois índices, 'ini' e 'fim',
 indicando o início e fim da região desejada da lista.
-
 Sua função retorna o valor armazenado na posição central da região desejada
 da lista. Isto é, na posição que é a média entre ini e fim.
 '''
 
 def no_centro(lista, ini, fim):
-    pass # colocar seu código no lugar desse pass
+    no_centro = media(ini, fim)
+
+    return lista[no_centro]
 
 
-
-'''
+'''    
 Lembra da busca binária?
-
 Se temos uma lista ORDENADA, e queremos saber se um número está lá,
 podemos fazer o seguinte: 
-
 1) Pegamos o numero do meio da lista.
 2) Se achamos nosso numero, retornamos True
 3) Caso o numero do meio seja maior, so precisamos procurar na parte de
 trás da lista (à esquerda do meio)
 4) Caso o numero do meio seja menor, so precisamos procurar na parte da
 frente da lista (à direita do meio)
-
 -----------
  
 Veja o seguinte exemplo:
@@ -243,34 +201,29 @@ Veja o seguinte exemplo:
 
 '''
 EXERCÍCIO 7
-
 Nesse exercício, vamos preencher algumas variáveis com uma simulação
 conceitual da busca binária.
-
 Preencha cada variável com a string
 'esquerda'
 ou
 'direita'
 conforme for o próximo passo adequado na simulação.
-
     testar em 3 variaveis, prox_lado1, prox_lado2, prox_lado3
     que terao os valores 'esquerda' ou 'direita'
 '''
 
 # Estou buscando o número 50. No meio da lista encontrei 30.
-prox_lado1 = None   # preencher com string 'esquerda' ou 'direita'
+prox_lado1 = 'direita'
 
 # Agora no meio da lista encontrei o 71. (Estou buscando 50)
-prox_lado2 = None   # preencher com string 'esquerda' ou 'direita'
+prox_lado2 = 'esquerda'
 
 # Agora no meio da lista encontrei o 44. (Estou buscando 50)
-prox_lado3 = None   # preencher com string 'esquerda' ou 'direita'
+prox_lado3 = 'direita'
 
 '''
 EXERCÍCIO 8
-
 Escreva uma funcao busca_binaria(lista,procurado)
-
 Implementamos a ideia descrita acima da seguinte forma:
     Comecamos com duas variaveis, ini = 0 e fim = len(lista)-1
     Definimos o meio como (ini + fim)//2
@@ -281,45 +234,87 @@ Implementamos a ideia descrita acima da seguinte forma:
         Se nao for, e o meio for menor, entao podemos pegar um novo comeco
 '''
 def busca_binaria(lista, alvo):
+
+    ini = 0
+    fim = len(lista) -1
+    meio = media(ini, fim)
+    i = 0
+
+    fotografa(meio, lista[meio])
+    
+    while ini <= fim:
+        i +=1
+        
+        meio = media(ini, fim)
+        if i != 1:
+            fotografa(meio, lista[meio])
+        if lista[meio] == alvo:
+            return True
+
+        
+        elif lista[meio] > alvo:
+            fim = meio -1
+        elif lista[meio] < alvo:
+            ini = meio + 1
+
+            
+        
     return False
 
 '''
 EXERCÍCIO 9:
-
 Dê um upgrade na função escrita acima.
 Esse upgrade consiste do seguinte: a cada vez que você visitar um novo
 "meio" da lista, tire uma fotografia. Os parâmetros dessa fotografia são
 o índice do meio e o elemento que nele se encontra. Exemplo:
-
 fotografa(indice_meio, lista[indice_meio])
-
 Essas fotografias são para garantir que seu algoritmo está passando pelas
 posições corretas da lista na busca pelo alvo.
 '''
 
 '''
 EXERCÍCIO 10:
-
 Escreva uma função busca_binaria_conta_passos, que é exatamente como a função
 que você já fez, porém ela retorna uma tupla com duas poisções.
 A primeira posição da tupla é exatamente como a da busca binária normal.
 A segunda posição informa o número de passos que a busca demorou para terminar.
-
 O número de passos é contado da seguinte forma: cada vez que visitamos um
 "meio da lista" para comparar com o alvo, isso conta como um passo.
-
 Exemplo: buscar 3 na lista [3, 5, 9].
 Primeiro passo: visita 5, decide ir para esquerda.
 Segundo passo: visita 3, elemento foi encontrado!
-
 Retorna a tupla (True, 2), pois foram feitos 2 passos de busca.
-
 Obs.: não é preciso tirar fotografias nessa função.
-
 '''
 
 def busca_binaria_conta_passos(lista, alvo):
-    pass
+
+    ini = 0
+    fim = len(lista) -1
+    meio = media(ini, fim)
+    i = 0
+
+    fotografa(meio, lista[meio])
+
+    contador = 0
+    
+    while ini <= fim:
+        i +=1
+        
+        meio = media(ini, fim)
+        if i != 1:
+            fotografa(meio, lista[meio])            
+
+        if lista[meio] == alvo:
+            return True, i
+
+        
+        elif lista[meio] > alvo:
+            fim = meio -1
+        elif lista[meio] < alvo:
+            ini = meio + 1
+            
+    return False, i
 
 # FIM DA AC. O código abaixo é para os testes automatizados, além da
 # implementação da função "fotografa".
@@ -352,7 +347,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(busca_linear(lista, 99), True)
         self.assertEqual(busca_linear(lista, -1), False)
         self.assertEqual(busca_linear(lista, 100), False)
-   
+
     def test_004_busca_linear_fotografias(self): 
         reseta_fotos()
         lista = list(range(10, 0, -1))
@@ -369,8 +364,8 @@ class TestStringMethods(unittest.TestCase):
             self.fail('erro nas fotografias.')
 
     def test_005a_var_medias(self):
-        self.compara_hash(media_4_6, 5.0)
-        self.compara_hash(media_1220_8, 614.0)
+        self.compara_hash(float(media_4_6), 5.0)
+        self.compara_hash(float(media_1220_8), 614.0)
         self.compara_hash(media_7_20, 13.5)
 
     def test_005b_media(self):
@@ -504,4 +499,4 @@ runTests()
 # se você quiser sempre rodar TODOS os testes (não só até primeira falha), usar
 # a seguinte chamada:
 
-# runTests(rapido=False)
+#runTests(rapido=False)
