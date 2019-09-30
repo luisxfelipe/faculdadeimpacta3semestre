@@ -31,8 +31,8 @@ http://localhost:8000/api/v2/pokemon-color/2/
 """
 Não altere estas URLs. Elas são utilizadas para conectar no treinador e no PokeAPI, respectivamente.
 """
-site_treinador = "http://127.0.0.1:9000"
-site_pokeapi = "http://127.0.0.1:8000"
+url_treinador = site_treinador = "http://127.0.0.1:9000"
+url_pokeapi = site_pokeapi = "http://127.0.0.1:8000"
 
 """
 Vamos precisar destas quatro exceções personalizadas.
@@ -66,16 +66,16 @@ def check_str(a):
 """
 Esta classe será utilizada no exercício 12 abaixo.
 """
-@dataclass(frozen = True)
+@dataclass()
 class Pokemon:
     nome_treinador: str
     apelido: str
     tipo: str
     experiencia: int
-    nivel: int
-    cor: str
-    evoluiu_de: str
-    evolui_para: list
+    nivel: int = 0 
+    cor: str = 'azul'
+    evoluiu_de: str = 'ninguem'
+    evolui_para: list = ''
 
 """
 1. Dado o número de um pokémon, qual é o nome dele?
@@ -142,16 +142,19 @@ def tipos_do_pokemon(nome):
     check_str(nome)
     nome=nome.lower()
     url='http://localhost:8000/api/v2/pokemon/'+str(nome)
-    print('\n',url)
+    #print('\n',url)
     dic_pokemon= api.get(url).json()
-    tipos = {"normal": "normal","lutador":"fighting","voador":"flying","veneno":"poison","terra":"earth","pedra":"stone","inseto":"insect","fantasma":"ghost","aço":"steel","fogo":"fire","água":"walter","grama":"grass", "elétrico":"electric", "psíquico":" psychic","gelo":"ice", "dragão":"dragon", "noturno":"night", "fada":"fairy"}
+    tipos = {"normal": "normal","fighting":"lutador","flying":"voador","poison":"veneno","ground":"terra","rock":"pedra","bug":"inseto","ghost":"fantasma","steel":"aço","fire":"fogo","water":"água","grass":"grama", "electric":"elétrico", "psychic":"psíquico","ice":"gelo", "dragon":"dragão", "dark":"noturno", "fairy":"fada"}
     tipos_traduzidos = []
+
+    if 'detail' in dic_pokemon:
+        raise PokemonNaoExisteException
+    
+
     tipo_pokemon = dic_pokemon['types']
-    print('\n',dic_pokemon['types'])
 
-    for i in tipo_pokemon:
-        tipos_traduzidos.append(tipos[i['types']['name']])    
-
+    for i in tipo_pokemon:  
+        tipos_traduzidos.append(tipos[i['type']['name']])
     return tipos_traduzidos
 
 """
@@ -160,7 +163,20 @@ Por exemplo, evolucao_anterior('venusaur') == 'ivysaur'
 Retorne None se o pokémon não tem evolução anterior. Por exemplo, evolucao_anterior('bulbasaur') == None
 """
 def evolucao_anterior(nome):
-    pass
+    check_str(nome)
+    nome=nome.lower()
+    url='http://localhost:8000/api/v2/pokemon-species/'+str(nome)
+    #print('\n',url)
+    dic_pokemon= api.get(url).json()
+
+    if 'detail' in dic_pokemon:
+        raise PokemonNaoExisteException
+
+    if dic_pokemon['evolves_from_species'] == None:
+        return None
+    else:
+        print('\nEvolucao anterior: ', dic_pokemon['evolves_from_species']['name'])
+        return dic_pokemon['evolves_from_species']['name']
 
 """
 7. Dado o nome de um pokémon, liste para quais pokémons ele pode evoluiur.
@@ -172,7 +188,98 @@ Note que esta função dá como resultado somente o próximo passo evoluitivo. A
 Se o pokémon não evolui, retorne uma lista vazia. Por exemplo, evolucoes_proximas('celebi') == []
 """
 def evolucoes_proximas(nome):
-    pass
+
+    check_str(nome)
+    nome=nome.lower()
+
+    url_pokemon='http://localhost:8000/api/v2/pokemon/'+str(nome)
+    print('\n')
+    print('\nURL Pokemon: ',url_pokemon)
+    dic_pokemon = api.get(url_pokemon).json()
+
+    print('\nEvolução anterior: ', evolucao_anterior(nome))
+
+    url_pokemon_species = dic_pokemon['species']['url']
+    print('\nURL Species: ', url_pokemon_species)
+    dic_pokemon_species = api.get(url_pokemon_species).json()
+    
+    url_pokemon_evolution_chain = dic_pokemon_species['evolution_chain']['url']
+    print('\nURL Evolution Chain: ', url_pokemon_evolution_chain)
+    dic_pokemon_evolution_chain = api.get(url_pokemon_evolution_chain).json()
+
+    evolucoes = []
+
+
+    #VERIFICA EXISTENCIA DO POKEMON
+
+    #NÃO EXISTE
+    if 'detail' in dic_pokemon:
+        raise PokemonNaoExisteException
+
+    #EXISTE
+    else:
+
+        #SE NÃO TIVER EVOLUÇÃO SIMPLES
+        if len(dic_pokemon_evolution_chain['chain']['evolves_to']) != 0:
+            
+            if 'evolves_to' in dic_pokemon_evolution_chain['chain']:
+
+                tamanho = len(dic_pokemon_evolution_chain['chain']['evolves_to'][0]['evolves_to'])
+                print('\nTamanho: ', tamanho)
+
+                if tamanho == 0 and evolucao_anterior(nome) == None:
+                                        
+                    print('\nentrei em tamanho 0')
+                    evolves_to = dic_pokemon_evolution_chain['chain']['evolves_to']
+
+                    for i in evolves_to:
+                        evolucoes.append(i['species']['name'])
+                elif tamanho == 2:
+
+                    if evolucao_anterior(nome) == None:
+                    
+                        print('\nentrei em tamanho 2')
+                        evolves_to = dic_pokemon_evolution_chain['chain']['evolves_to']
+
+                        for i in evolves_to:
+                            print('\nentrei no for')
+                            evolucoes.append(i['species']['name'])
+
+                    else:
+
+                        if evolucao_anterior(evolucao_anterior(nome)) == None:
+                            evolves_to = dic_pokemon_evolution_chain['chain']['evolves_to'][0]['evolves_to']
+
+                            for i in evolves_to:
+                                print('\nentrei no for')
+                                evolucoes.append(i['species']['name'])
+
+                elif tamanho == 1:
+
+                    #SE NÃO TIVER EVOLUÇÃO ANTERIOR
+                    if evolucao_anterior(nome) == None:
+                        print('\nnão tem evolucao anterior')
+
+                        if tamanho == 1:
+                            evolucoes.append(dic_pokemon_evolution_chain['chain']['evolves_to'][0]['species']['name'])
+                            print('\nadicionando: ',dic_pokemon_evolution_chain['chain']['evolves_to'][0]['species']['name'])                              
+                            
+                    #CASO TENHA EVOLUCAO ANTERIOR
+                    else:
+                        print('\nTem evolucao anterior')
+
+                        if evolucao_anterior(evolucao_anterior(nome)) == None:
+
+                            evolucoes.append(dic_pokemon_evolution_chain['chain']['evolves_to'][0]['evolves_to'][0]['species']['name'])
+                            print('\nadicionando: ',dic_pokemon_evolution_chain['chain']['evolves_to'][0]['evolves_to'][0]['species']['name'])
+                
+                #elif tamanho == 2:
+               
+
+
+        print('\nEvoluções', evolucoes)
+        
+        return evolucoes
 
 """
 8. A medida que ganham pontos de experiência, os pokémons sobem de nível.
@@ -187,6 +294,11 @@ def nivel_do_pokemon(nome, experiencia):
 """
 9. Dado um nome de treinador, cadastre-o na API de treinador.
 Retorne True se um treinador com esse nome foi criado e False em caso contrário (já existia).
+
+Para passar esse teste, também vai ser necessário a função detalhar_treinador,
+que conecta ao servidor e verifica se o treinador com o nome dado existe.
+
+Essa funcao esta definida mais abaixo, nao precisa se preocupar com ela ainda
 """
 def cadastrar_treinador(nome):
     pass
@@ -204,11 +316,11 @@ def cadastrar_pokemon(nome_treinador, apelido_pokemon, tipo_pokemon, experiencia
 11. Dado um nome de treinador, um apelido de pokémon e uma quantidade de experiência, localize esse pokémon e acrescente-lhe a experiência ganha.
 """
 def ganhar_experiencia(nome_treinador, apelido_pokemon, experiencia):
-    pass
+   pass 
 
 """
 12. Dado um nome de treinador e um apelido de pokémon, localize esse pokémon na API do treinador e retorne um objeto da classe Pokemon mostrando:
-Qual é a sua espécie, a sua quantidade de experiência e em que nível ele está.
+Qual é a sua espécie, a sua quantidade de experiência, o nome do seu treinador e o seu apelido (outros atributos da classe Pokemon serão preenchidos em um teste mais pra frente, que vai retomar essa função).
 """
 def localizar_pokemon(nome_treinador, apelido_pokemon):
     pass
@@ -216,8 +328,11 @@ def localizar_pokemon(nome_treinador, apelido_pokemon):
 """
 13. Dado o nome de um treinador, localize-o na API do treinador e retorne um dicionário contendo como chaves, os apelidos de seus pokémons e como valores os tipos deles.
 """
-def detalhar_treinador(nome_treinador):
-    pass
+def detalhar_treinador(nome):
+    resp = api.get(url_treinador+'/treinador/'+nome)
+    if resp.status_code == 404:
+        raise TreinadorNaoCadastradoException
+    return {}
 
 """
 14. Dado o nome de um treinador, localize-o na API do treinador e exclua-o, juntamente com todos os seus pokémons.
