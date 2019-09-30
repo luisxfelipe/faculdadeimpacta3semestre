@@ -174,13 +174,11 @@ insere_varios([1,2,3]) --> retorna fila contendo 1, 2, 3
 
 def insere_varios(lista):
     # remova esse 'pass' e escreva sua função aqui.
-    print('\nlista:', lista)
     fila = Fila()
-    print('\nfila:', fila.fila)
+
     while len(lista) > 0:
-        print('\ninserindo: ', lista[0])
+
         fila.insere(lista.pop(0))
-        print('\nresultado da lista: ', lista)
 
     return fila
 
@@ -240,25 +238,22 @@ embarca(['Jose', 'Samuel', 'Carla'])
 
 def embarca(pessoas):
     # tire esse pass e implemente a função!
-    fila = []
+    fila = Fila()
     passageiro = []
+    lista = []
 
-    print('\n######################')
-    
-
-    print('\nTamanho das pessoas: ', len(pessoas))
-    print('\n', pessoas)
     while len(pessoas) > 0:
-        print('\nPassageiro: ', passageiro)
         passageiro.insert(0, pessoas.pop(0))
-        print('\nPassageiro depois: ', passageiro)
-        print('\npassageiro[0]: ', passageiro[0])
         
         if passageiro[0] != 'Samuel':
-            fila.append(passageiro.pop(0))
+            fila.insere(passageiro.pop(0))
+            fotografa(fila)
 
-        
-    return fila
+    lista = []
+    while fila.tamanho() != 0:
+        lista.append(fila.remove())
+        fotografa(fila)
+    return lista
 '''
 EXERCÍCIO 9
 
@@ -300,7 +295,15 @@ entrada_bar([ ('Jorge', 22), ('Melissa', 41), ('Fernando', 17), ('Laura', 27)  ]
 
 '''
 def entrada_bar(pessoas):
-    pass # remova esse pass e coloque a implementação da função.
+
+    lista = []
+    
+    for i in pessoas:
+        
+        if i[1] >= 18:
+            lista.append(i[0])
+
+    return lista
 
 '''
 EXERCÍCIO 11
@@ -333,7 +336,55 @@ fila_banco([ ('Jorge', 22), ('Valter', 90), ('Alice', 88), ('Boris', 77) ])
 '''
 
 def fila_banco(pessoas):
-    pass # remova o pass e implemente a função!
+    fila_normal = Fila()
+    fila_prioritaria = Fila()
+    normal = 0
+    prioridade = 0
+
+    fila = []
+
+    tamanho_pessoas = len(pessoas)
+
+    print('\n#################################')
+    print('\nPessoas: ', pessoas)
+    print('\nTamanho: ', len(pessoas))
+
+    for i in pessoas:
+        if i[1] >= 60:
+            fila_prioritaria.insere(i[0])
+            fotografa(fila_prioritaria)
+            print('\nFila normal: ',fila_normal.fila)
+            
+        else:
+            fila_normal.insere(i[0])
+            fotografa(fila_normal)
+            print('\nFila prioritaria: ',fila_prioritaria.fila)
+
+    while len(fila) != tamanho_pessoas:
+        print('\nWhile', prioridade, ',', normal)
+        if fila_prioritaria.tamanho() > 0 and prioridade <= 2:
+            print('\nPrioridade!')
+            fila.append(fila_prioritaria.remove())
+            #fotografa(fila)
+            print('\nFila: ', fila)
+            prioridade += 1
+            print('\nPrioridade: ', prioridade)
+        if fila_normal.tamanho() > 0 and prioridade == 2 or fila_normal.tamanho() > 0 and fila_prioritaria.tamanho() == 0:
+            print('\nNormal!')
+            fila.append(fila_normal.remove())
+            #fotografa(fila)
+            print('\nFila: ', fila)
+            normal += 1
+            print('\nNormal: ', normal)
+
+        if prioridade == 2:
+            prioridade = 0
+            normal = 0
+            print('\nzera prioridades', prioridade, ',', normal)
+
+        print('\nTamanho_fila: ', len(fila))
+    
+    return fila
 
 '''
 EXERCÍCIO 12
