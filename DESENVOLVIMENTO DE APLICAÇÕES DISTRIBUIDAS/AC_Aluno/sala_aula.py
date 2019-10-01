@@ -33,7 +33,7 @@ def deleta_aluno():
     for aluno in database['ALUNO']:
         if aluno['id'] == id_aluno:
             
-            aluno.pop(id_aluno)
+            aluno.pop(database['ALUNO'].index(aluno))
             return jsonify(aluno)
     return 'nao achei', 404
 
