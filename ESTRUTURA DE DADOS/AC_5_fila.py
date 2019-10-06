@@ -345,44 +345,44 @@ def fila_banco(pessoas):
 
     tamanho_pessoas = len(pessoas)
 
-    print('\n#################################')
-    print('\nPessoas: ', pessoas)
-    print('\nTamanho: ', len(pessoas))
+    #print('\n#################################')
+    #print('\nPessoas: ', pessoas)
+    #print('\nTamanho: ', len(pessoas))
 
     for i in pessoas:
         if i[1] >= 60:
             fila_prioritaria.insere(i[0])
             fotografa(fila_prioritaria)
-            print('\nFila normal: ',fila_normal.fila)
+            #print('\nFila normal: ',fila_normal.fila)
             
         else:
             fila_normal.insere(i[0])
             fotografa(fila_normal)
-            print('\nFila prioritaria: ',fila_prioritaria.fila)
+            #print('\nFila prioritaria: ',fila_prioritaria.fila)
 
     while len(fila) != tamanho_pessoas:
-        print('\nWhile', prioridade, ',', normal)
+        #print('\nWhile', prioridade, ',', normal)
         if fila_prioritaria.tamanho() > 0 and prioridade <= 2:
-            print('\nPrioridade!')
+            #print('\nPrioridade!')
             fila.append(fila_prioritaria.remove())
             #fotografa(fila)
-            print('\nFila: ', fila)
+            #print('\nFila: ', fila)
             prioridade += 1
-            print('\nPrioridade: ', prioridade)
+            #print('\nPrioridade: ', prioridade)
         if fila_normal.tamanho() > 0 and prioridade == 2 or fila_normal.tamanho() > 0 and fila_prioritaria.tamanho() == 0:
-            print('\nNormal!')
+            #print('\nNormal!')
             fila.append(fila_normal.remove())
             #fotografa(fila)
-            print('\nFila: ', fila)
+            #print('\nFila: ', fila)
             normal += 1
-            print('\nNormal: ', normal)
+            #print('\nNormal: ', normal)
 
         if prioridade == 2:
             prioridade = 0
             normal = 0
-            print('\nzera prioridades', prioridade, ',', normal)
+            #print('\nzera prioridades', prioridade, ',', normal)
 
-        print('\nTamanho_fila: ', len(fila))
+        #print('\nTamanho_fila: ', len(fila))
     
     return fila
 

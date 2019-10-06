@@ -28,35 +28,30 @@ def localiza_aluno(id_aluno):
     return 'nao achei', 404
 
 @app.route('/alunos/<int:id_aluno>', methods=['DELETE'])
-def deleta_aluno():
-    
+def deleta_aluno(id_aluno):
+
     for aluno in database['ALUNO']:
         if aluno['id'] == id_aluno:
             
-            aluno.pop(database['ALUNO'].index(aluno))
-            return jsonify(aluno)
+            database['ALUNO'].pop(database['ALUNO'].index(aluno))
+            #database['ALUNO'].pop(index)
+            return jsonify(database['ALUNO'])
+     
     return 'nao achei', 404
 
-    '''
-    if id_aluno in database['ALUNO']:
-        alunos.pop(id_aluno)
-        return jsonify(aluno)
-    return 'nao achei', 404
-'''
-    '''
+
+@app.route('/alunos/<int:id_aluno>/<string:nome_aluno>', methods=['PUT']) 
+def edita_aluno(id_aluno,nome_aluno):
+    
     for aluno in database['ALUNO']:
         if aluno['id'] == id_aluno:
-            del(al)
-    '''
-'''
-@app.route('/alunos/<int:id_aluno>', methods=['PUT']) 
-def edita_aluno(id_aluno):
-    for aluno in database['ALUNO']:
-        if aluno['id'] == id_aluno:
-            aluno['nome'] == ""
-            return jsonify(aluno)
+            aluno['nome'] = nome_aluno['nome']
+            #database['ALUNO'].pop(database['ALUNO'].index(aluno))
+            #database['ALUNO'].pop(index)
+            return jsonify(database['ALUNO'])
+     
     return 'nao achei', 404
-'''
+
 @app.route('/reseta', methods=['POST'])
 def reseta():
     database['ALUNO'] = []
