@@ -64,11 +64,11 @@ class BaseDeDados:
     #   METODO CONSTRUTOR DA CLASSE
     ###
     
-    def __init__(self, ocorreciasSemProcessar: Ocorrencia, ocorreciasProcessadas: Ocorrencia, multas: Multa, regras: RegraMulta) -> None:
+    def __init__(self, ocorreciasSemProcessar: Ocorrencia, ocorreciasProcessadas: Ocorrencia) -> None:
         self._ocorreciasSemProcessar = ocorreciasSemProcessar
         self._ocorreciasProcessadas = ocorreciasProcessadas
-        self._multas = multas
-        self._regras = regras
+        self._multas = []
+        self._regras = []
 
     ###
     #   METODOS DE ACESSO
@@ -83,7 +83,7 @@ class BaseDeDados:
     def getMultas(self) -> Multa:
         return self._multas
 
-    def getRegras(self) -> RegraMulta:
+    def getRegras(self) -> []:
         return self._regras
 
     ###
@@ -94,7 +94,42 @@ class BaseDeDados:
         pass
 
     def inicializaRegras(self):
-        pass
+
+        print('\nInicializando Regras...\n')
+        
+        self._regras.append(RegraVelocidade(60, "Avenida Brasil"))
+        self._regras.append(RegraVelocidade(70, "Avenida França"))
+        self._regras.append(RegraVelocidade(80, "Avenida Canada"))
+        self._regras.append(RegraVelocidade(90, "Rodovia Alemanha"))
+        self._regras.append(RegraVelocidade(120, "Rodovia Castelo Branco"))
+        self._regras.append(RegraVelocidade(60, "Avenida Presidente Vargas"))
+        self._regras.append(RegraVelocidade(70, "Avenida das Nações"))
+        self._regras.append(RegraVelocidade(80, "Avenida Santa Maria"))
+        self._regras.append(RegraVelocidade(90, "Rodovia Castelo Preto"))
+        self._regras.append(RegraVelocidade(120, "Rodovia Leste"))
+        
+
+        self._regras.append(RegraRodizio(0, {"Rodovia Amarela", "Rodovia Verde"}, 1, 1))
+        self._regras.append(RegraRodizio(1, {"Rodovia Roza", "Rodovia Azul"}, 2, 2))
+        self._regras.append(RegraRodizio(2, {"Rodovia Amarela", "Rodovia Verde"}, 3, 1))
+        self._regras.append(RegraRodizio(3, {"Rodovia Roza", "Rodovia Azul"}, 4, 2))
+        self._regras.append(RegraRodizio(4, {"Rodovia Amarela", "Rodovia Verde"}, 5, 1))
+        self._regras.append(RegraRodizio(5, {"Rodovia Roza", "Rodovia Azul"}, 1, 2))
+        self._regras.append(RegraRodizio(6, {"Rodovia Amarela", "Rodovia Verde"}, 2, 1))
+        self._regras.append(RegraRodizio(7, {"Rodovia Roza", "Rodovia Azul"}, 3, 2))
+        self._regras.append(RegraRodizio(8, {"Rodovia Amarela", "Rodovia Verde"}, 4, 1))
+        self._regras.append(RegraRodizio(9, {"Rodovia Roza", "Rodovia Azul"}, 5, 2))
+
+        self._regras.append(RegraCorredorOnibus(6, 18, "Corredor 1"))
+        self._regras.append(RegraCorredorOnibus(7, 19, "Corredor 2"))
+        self._regras.append(RegraCorredorOnibus(8, 20, "Corredor 3"))
+        self._regras.append(RegraCorredorOnibus(9, 21, "Corredor 4"))
+        self._regras.append(RegraCorredorOnibus(6, 17, "Corredor 5"))
+        self._regras.append(RegraCorredorOnibus(8, 14, "Corredor 6"))
+        self._regras.append(RegraCorredorOnibus(5, 12, "Corredor 7"))
+        self._regras.append(RegraCorredorOnibus(9, 16, "Corredor 8"))
+        self._regras.append(RegraCorredorOnibus(8, 15, "Corredor 9"))
+        self._regras.append(RegraCorredorOnibus(5, 11, "Corredor 10"))
 
 class RegraMulta:
 
@@ -133,17 +168,18 @@ class RegraMulta:
     def obterDescricaoMulta(self) -> str:
         pass
 
-class RegraVelocidade:
+class RegraVelocidade(RegraMulta):
 
     ###
     #   METODO CONSTRUTOR DA CLASSE
     ###
     
-    def __init__(self, velocidadeMaxima: int, nomeLogradouro: str, porcentagemMultaMedia: float, porcentagemMultaGrave: float) -> None:
+    def __init__(self, velocidadeMaxima: int, nomeLogradouro: str) -> None:
+        super().__init__(valorMultaMedia, valorMultaGrave, valorMultaLeve)
         self._velocidadeMaxima = velocidadeMaxima
         self._nomeLogradouro = nomeLogradouro
-        self._porcentagemMultaMedia = porcentagemMultaMedia
-        self._porcentagemMultaGrave = porcentagemMultaGrave
+        self._porcentagemMultaMedia = float(0.1)
+        self._porcentagemMultaGrave = float(0.4)
 
     ###
     #   METODOS DE ACESSO
@@ -174,13 +210,14 @@ class RegraVelocidade:
     def regraVelocidade(self, velMax, logr):
         pass
 
-class RegraRodizio:
+class RegraRodizio(RegraMulta):
 
     ###
     #   METODO CONSTRUTOR DA CLASSE
     ###
 
     def __init__(self, finalPlaca: int, logradourosAfetados: str, diaDaSemana: int, tipoVeiculo: int) -> None:
+        super().__init__(valorMultaMedia, valorMultaGrave, valorMultaLeve)
         self._finalPlaca = finalPlaca
         self._logradourosAfetados = logradourosAfetados
         self._diaDaSemana = diaDaSemana
@@ -215,13 +252,14 @@ class RegraRodizio:
     def regraRodizio(self, placa, logr, dia, tipVei):
         pass
 
-class RegraCorredorOnibus:
+class RegraCorredorOnibus(RegraMulta):
 
     ###
     #   METODO CONSTRUTOR DA CLASSE
     ###
     
     def __init__(self, horaInicial: int, horaFinal: int, nomeLogradouro: str) -> None:
+        super().__init__(valorMultaMedia, valorMultaGrave, valorMultaLeve)
         self._horaInicial = horaInicial
         self._horaFinal = horaFinal
         self._nomeLogradouro = nomeLogradouro
@@ -251,3 +289,8 @@ class RegraCorredorOnibus:
 
     def regraCorredorOnibus(self, ini, fim, logr):
         pass
+
+interfaceDetran()
+
+def interfaceDetran():
+    BaseDados.inicializaRegras()
