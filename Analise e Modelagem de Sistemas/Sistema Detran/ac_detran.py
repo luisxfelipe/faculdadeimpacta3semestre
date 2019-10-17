@@ -17,8 +17,14 @@ class BaseDeDados:
     #   METODOS DE ACESSO
     ###
 
+    def contaOcorenciasSemProcessar(self):
+        return len(self._ocorreciasSemProcessar)
+
     def getOcorreciasSemProcessar(self):
         return self._ocorreciasSemProcessar
+
+    def setOcorrenciaSemProcessar(self, ocorrencia):
+        self._ocorreciasSemProcessar.append(ocorrencia)
 
     def getOcorreciasProcessadas(self):
         return self._ocorreciasProcessadas
@@ -28,6 +34,9 @@ class BaseDeDados:
 
     def getRegras(self) -> []:
         return self._regras
+
+    def cadastraRegra(self, regra):
+        self._regras.append(regra)
 
     ###
     #   OUTROS METODOS DA CLASSE
@@ -300,16 +309,35 @@ class RegraCorredorOnibus(RegraMulta):
     def regraCorredorOnibus(self, ini, fim, logr):
         pass
 
-'''
-interfaceDetran()
+def ValidaExecucao():
+    continua = input('\nDeseja continuar a execução do rograma (s/n)? ')
 
-def interfaceDetran():
-    BaseDados.inicializaRegras()
-'''
+    print('\nOpção escolhida: ', continua)
 
-b = BaseDeDados([], [])
+    if continua == "s" or continua == "S":
+        
+        execucao = True
+    elif continua == "n" or continua == "N":
+        
+        execucao = False
+    else:
+        
+        while continua != "s" or continua != "S" or continua != "n" or continua != "N":
+            continua = input("Opção inválida você digitou(", continua, "), digite s ou n:")
 
-b.inicializaRegras()
+            if continua == "s" or continua == "S":
+                execucao = True
+            elif continua == "n" or continua == "N":
+                execucao = False
+
+    return execucao
+
+
+base = BaseDeDados([], [])
+
+base.inicializaRegras()
+
+
 
 
 
@@ -327,8 +355,34 @@ while execucao == True:
 
     if opcao == 1:
         print('\nCadastro de ocorrência.\n')
+
+        print('\nNumero de ocorrencias: ', base.contaOcorenciasSemProcessar())
+
+        #placa: str, dataHora: str, nomeLogradouro: str, velocidadeMedia: int, tipoVeiculo: int
+
         placa = input("\nDigite a placa do veículo: ")
-        placa = input("\nDigite a data da multa: ")
+
+        data = ""
+
+        while len(data) != 14:
+            data = input("\nDigite a data da e hora da multa ex: 15/04/2019 20:00 : ")
+
+            if len(data) != 14:
+                print("\nFormato da data incorreto o certo é 15/04/2019 20:00")
+
+        print("\nLen da data: ", len(data))
+        nomeLogradouro = input("\nDigite o nome do logradouro: ")
+        velocidadeMedia = input("\nDigite a velocidade média: ")
+        tipoVeiculo = input("\nDigite o tipo do veículo: ")
+        ocorrencia = Ocorrencia(placa, data, nomeLogradouro, velocidadeMedia, tipoVeiculo)
+        base.setOcorrenciaSemProcessar(ocorrencia)
+
+        print('\nNumero de ocorrencias: ', base.contaOcorenciasSemProcessar())
+        print('\nOcorrencia cadastrada com sucesso.\n')
+
+        execucao = ValidaExecucao()
+
+
     elif opcao == 2:
         print('\nPesquisa de multas por data e placa.\n')
     elif opcao == 3:
@@ -336,7 +390,31 @@ while execucao == True:
     elif opcao == 4: 
         print('\nCadastro de regra.\n')
 
+        print('\nEscolha uma das opções.\n')
+        print('\n1 - Regra de Velocidade.')
+        print('\n2 - Regra de Rodizio. ')
+        print('\n3 - Regra de Corredor de onibus.')
+        
+        opcaoRegra = int(input('\nDigite o número da opção desejada: '))
+
+        if opcaoRegra == 1:
+            velocidadeRegra = int(input('\nDigite a velocidade: '))
+            logradouroRegra = input('\nDigite o nome do logradouro: ')
+
+            regraParaCadastrar = RegraVelocidade(velocidadeRegra, logradouroRegra)
+        elif opcaoRegra == 2:
+            pass
+        elif opcaoRegra ==3:
+            pass
+
+        base.cadastraRegra(regraParaCadastrar)
+
+        print("\nRegra cadastrada com sucesso!")
+
+        execucao = ValidaExecucao()
+
     elif opcao == 5:
         print('\nPrograma encerrado.\n')
         execucao = False
+
 
