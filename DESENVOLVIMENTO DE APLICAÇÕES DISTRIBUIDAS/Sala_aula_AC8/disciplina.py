@@ -48,11 +48,23 @@ def edita_aluno(id_disciplina):
     except util.NotFoundError:
         return jsonify({'erro':'disciplina nao encontrada'}),400
 
+def professor_valido(id_professor):
+    #r = request.get()
+
 #'plano_ensino':'dados','carga_horaria'
 @app.route('/disciplinas', methods=['POST'])
 def nova_disciplina():
     print('ola')
     nova_disciplina = request.json
+
+    campos_inteiros = ['id','status', 'carga_horaria', 'id_cordenador']
+    campos_texto =['nome','plano_ensino']
+    campos_data = []
+    campos_opcionais = ['id_cordenador']
+
+    valido, dic_erro = verifica_campos(nova_disciplina, campos_inteiros, campos_texto, campos_data, campos_opcionais)
+
+
     print(request.method)
 
     print('\nstatus: ', type(nova_disciplina['status']))
