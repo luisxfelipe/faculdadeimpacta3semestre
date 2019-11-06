@@ -7,8 +7,6 @@ class NotFoundError(Exception):
 database = dict()
 database['ALUNO'] = []
 database['PROFESSOR'] = []
-database['DISCIPLINA'] = []
-database['DISCIPLINA_OFERTADA']
 
 def erro(texto):
     return jsonify({'erro':texto})
