@@ -63,12 +63,17 @@ class Arvore:
             self.filhoDir.mostra_in_ordem()
 
     def mostra_pre_ordem(self):
-        
+               
         if (self.filhoEsq is not None):
-            self.filhoEsq.mostra_in_ordem()
+            self.filhoEsq.mostra_pre_ordem()
+        
         print(self.dado)
+        
         if (self.filhoDir is not None):
-            self.filhoDir.mostra_in_ordem()
+            self.filhoDir.mostra_pre_ordem()
+        
+        
+        
 '''
 Exercício 1:
     Faça com que a variável "arvore1" abaixo receba uma nova instância da
@@ -110,6 +115,7 @@ aarvore3 = Arvore(7)
 aarvore4 = Arvore(2, aarvore1, aarvore2)
 aarvore5 = Arvore(9, aarvore3)
 BST = Arvore(5, aarvore4, aarvore5)
+
 
 '''
 Exercício 3:
@@ -191,7 +197,7 @@ Exercício 5:
     BST que você criou no Exercício 2.
 '''
 
-saida_BST_pre_ordem = [] # coloque na lista os elementos na ordem certa.
+saida_BST_pre_ordem = [1,2,3,5,7,9]
 
 '''
 EXPLICAÇÃO
@@ -213,7 +219,7 @@ Exercício 6:
     Você deve respeitar a ordem! Portanto, o primeiro visitado será a raiz, etc...
 '''
 
-visitados_BST_alvo_4 = [] # preencha a lista com os elementos visitados na ordem certa
+visitados_BST_alvo_4 = [5,2,3]
 
 '''
 EXPLICAÇÃO:
@@ -264,7 +270,7 @@ Exercício 7:
       1   6    9    15
 '''
 
-gera_BST = []
+gera_BST = [1,5,6,8,9,10,15]
 
 '''
 Exercício 8:
@@ -273,7 +279,64 @@ Exercício 8:
 '''
 
 def busca_na_BST(arvore, alvo):
-    pass
+
+    '''
+    print('\nNova arvore visitada')
+    print('\nDado e alvo: ',arvore.dado, ', ', alvo)
+    '''
+
+    if arvore.dado == alvo:
+        '''
+        print('\nAchei o alvo: ', alvo)
+        '''
+        return True
+    
+    else:
+        '''
+        print('\nDado não é o alvo')
+    
+        print('\nfolha: ', arvore.folha)
+        '''
+        if arvore.filhoEsq is None and arvore.filhoDir is None:
+            '''
+            print('\nNão achei o alvo: ', alvo)
+            '''
+            return False
+        
+        else:
+            '''
+            print('\nArvore não é folha')
+            '''
+
+            if arvore.filhoEsq is None and arvore.filhoDir is not None or arvore.filhoDir is None and arvore.filhoEsq is not None:
+                '''
+                print('\nArvore contem apenas 1 filho')
+                '''
+
+            f_filho_esquerdo = arvore.filhoEsq
+
+            f_filho_direito = arvore.filhoDir
+
+            resporta = None
+
+            if arvore.dado < alvo:
+                '''
+                print('\nFilho direito visitado')
+                print('\nDado do filho: ',f_filho_direito.dado)
+                '''
+                resporta = busca_na_BST(f_filho_direito, alvo)
+
+            else:
+                '''
+                print('\nFilho esquerdo visitado')
+                print('\nDado do filho: ',f_filho_esquerdo.dado)
+                '''
+                resporta = busca_na_BST(f_filho_esquerdo, alvo)
+
+            if resporta == True:
+                    return True
+            else:
+                return False
 
 # FIM DA AC. O código abaixo é para os testes automatizados.
 # --------------------------------------------------------------------------
