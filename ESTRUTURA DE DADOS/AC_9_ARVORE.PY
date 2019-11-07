@@ -1,5 +1,5 @@
-# Nome e R.A. da pessoa 1
-# Nome e R.A. da pessoa 2 (se feito em dupla)
+# Luís Felipe Simões: 1801789
+# Gustavo Luiz Silva Lima: 1801471
 
 '''
 Uma árvore é uma estrutura recursiva.
